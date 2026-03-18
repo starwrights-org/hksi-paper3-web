@@ -64,7 +64,10 @@ export default function QuizClient({ chapterId }: { chapterId: string }) {
   useEffect(() => {
     async function loadQuestions() {
       try {
-        const res = await fetch(`/data/${chapterId}.md`);
+        // 从 window.location 检测是否在 GitHub Pages
+        const isGitHubPages = typeof window !== 'undefined' && window.location.pathname.startsWith('/hksi-paper3-web');
+        const basePath = isGitHubPages ? '/hksi-paper3-web' : '';
+        const res = await fetch(`${basePath}/data/${chapterId}.md`);
         const content = await res.text();
         const parsed = parseMarkdown(content);
         setQuestions(parsed);
